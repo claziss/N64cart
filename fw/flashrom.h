@@ -6,17 +6,17 @@
 #include "hardware/structs/ssi.h"
 #include "hardware/structs/ioqspi.h"
 
-inline void xxx_hw_xor_bits(io_rw_32 *addr, uint32_t mask)
+static inline void xxx_hw_xor_bits(io_rw_32 *addr, uint32_t mask)
 {
     *(io_rw_32 *) hw_xor_alias_untyped((volatile void *)addr) = mask;
 }
 
-inline void xxx_hw_write_masked(io_rw_32 *addr, uint32_t values, uint32_t write_mask)
+static inline void xxx_hw_write_masked(io_rw_32 *addr, uint32_t values, uint32_t write_mask)
 {
     xxx_hw_xor_bits(addr, (*addr ^ values) & write_mask);
 }
 
-void inline flash_cs_force(bool high)
+static inline void flash_cs_force(bool high)
 {
     uint32_t field_val = high ? IO_QSPI_GPIO_QSPI_SS_CTRL_OUTOVER_VALUE_HIGH : IO_QSPI_GPIO_QSPI_SS_CTRL_OUTOVER_VALUE_LOW;
     xxx_hw_write_masked(&ioqspi_hw->io[1].ctrl, field_val << IO_QSPI_GPIO_QSPI_SS_CTRL_OUTOVER_LSB, IO_QSPI_GPIO_QSPI_SS_CTRL_OUTOVER_BITS);
@@ -50,7 +50,7 @@ void flash_quad_gpio_init(void);
 
 void flash_quad_cont_read_mode(void);
 
-uint16_t inline flash_quad_read16(uint32_t addr)
+static inline uint16_t flash_quad_read16(uint32_t addr)
 {
 #if defined(DISABLE_FLASH_ADDR_32) && (DISABLE_FLASH_ADDR_32 == 1)
     ssi_hw->dr0 = (addr << 8) | MODE_CONTINUOS_READ;
@@ -64,7 +64,7 @@ uint16_t inline flash_quad_read16(uint32_t addr)
     return ssi_hw->dr0;
 }
 
-void inline flash_quad_exit_cont_read_mode()
+static inline void flash_quad_exit_cont_read_mode()
 {
 #if defined(DISABLE_FLASH_ADDR_32) && (DISABLE_FLASH_ADDR_32 == 1)
     ssi_hw->dr0 = 0x0;

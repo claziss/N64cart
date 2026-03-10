@@ -79,7 +79,15 @@ void flash_spi_mode(void)
 
 void flash_config(void)
 {
+    uint8_t jedec[3];
     uint8_t sr3;
+
+    xflash_do_cmd(0x9f, NULL, jedec, sizeof(jedec));
+
+    // BY25Q128AS is happier with default drive-strength settings.
+    if (jedec[0] == 0x68) {
+        return;
+    }
 
     xflash_do_cmd(0x15, NULL, &sr3, 1);
 

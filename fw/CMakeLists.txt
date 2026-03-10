@@ -22,6 +22,10 @@ elseif(${BOARD} STREQUAL "v2")
     set(PICO_BOARD n64cart-v2)
     set(PICO_BOARD_HEADER_DIRS ${CMAKE_CURRENT_LIST_DIR}/board)
     message(STATUS "Cartridge N64cart v2")
+elseif(${BOARD} STREQUAL "v3-by")
+    set(PICO_BOARD n64cart-v3-by)
+    set(PICO_BOARD_HEADER_DIRS ${CMAKE_CURRENT_LIST_DIR}/board)
+    message(STATUS "Cartridge N64cart v3 (BY25Q128AS)")
 else()
     set(PICO_BOARD n64cart-v3)
     set(PICO_BOARD_HEADER_DIRS ${CMAKE_CURRENT_LIST_DIR}/board)
@@ -104,6 +108,7 @@ list(APPEND SOURCES
     board/n64cart-pico.h
     board/n64cart-pico-lite.h
     board/n64cart-v2.h
+    board/n64cart-v3-by.h
     usb/usb_common.h
     usb/usbd.h
     usb/dev_lowlevel.h
