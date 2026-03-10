@@ -52,6 +52,7 @@ static const struct flash_chip flash_chip[] = {
 { 0xc2, 0x201b, 128, "MX66L1G45G" },
 { 0xef, 0x4020, 64, "W25Q512" },
 { 0xef, 0x4019, 32, "W25Q256" },
+{ 0x68, 0x4018, 16, "BY25Q128AS" },
 { 0xef, 0x4018, 16, "W25Q128" },
 { 0xef, 0x4017, 8, "W25Q64" },
 { 0xef, 0x4016, 4, "W25Q32" },

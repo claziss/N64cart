@@ -23,6 +23,10 @@ ifeq (pico-lite,$(BOARD))
 CFLAGS += -DDISABLE_FLASH_ADDR_32=1 -DDISABLE_UART
 endif
 
+ifeq (v3-by,$(BOARD))
+CFLAGS += -DDISABLE_FLASH_ADDR_32=1
+endif
+
 ifeq (y,$(NO_FILE_DELETION))
 CFLAGS += -DNO_FILE_DELETION
 endif
