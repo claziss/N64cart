@@ -245,15 +245,44 @@ Full list of the utility commands:
 ./usb-romfs bootloader
 ./usb-romfs reboot
 ./usb-romfs format
-./usb-romfs list
-./usb-romfs delete <remote filename>
+./usb-romfs list [-h] [path]
+./usb-romfs delete <remote path>
 ./usb-romfs mkdir <remote path>
 ./usb-romfs rmdir <remote path>
 ./usb-romfs rename <source> <destination> [--create-dirs]
-./usb-romfs push [--fix-rom][--fix-pi-bus-speed[=12..FF]] <local filename>[ <remote filename>]
-./usb-romfs pull <remote filename>[ <local filename>]
+./usb-romfs push [--fix-rom] [--fix-pi-bus-speed[=12..FF]] <local filename> [<remote path>]
+./usb-romfs pull <remote path> [<local filename>]
 ./usb-romfs free
 ```
+
+Command details:
+
+- `help`: print command usage.
+- `bootloader`: reboot RP2040 into UF2 bootloader mode (for firmware update).
+- `reboot`: reboot cartridge firmware.
+- `format`: format ROMFS area on flash.
+- `list [-h] [path]`: list files in ROMFS root or in `path`.
+  - `-h`: print human-readable sizes (`KB`, `MB`, ...) instead of raw bytes.
+- `delete <remote path>`: delete a file.
+- `mkdir <remote path>`: create a directory path (intermediate directories are created automatically).
+- `rmdir <remote path>`: remove an existing directory.
+- `rename <source> <destination> [--create-dirs]`: rename or move a file/directory.
+  - `--create-dirs`: create missing destination parent directories before rename.
+- `push [--fix-rom] [--fix-pi-bus-speed[=12..FF]] <local filename> [<remote path>]`: upload a local file to ROMFS.
+  - `<remote path>` behavior:
+    - omitted: use local file basename in ROMFS root.
+    - points to an existing directory, or ends with `/`: upload into that directory using local basename.
+    - otherwise: use it as exact destination file path/name.
+  - `--fix-rom`: detect ROM byte order and convert uploaded data to Z64 byte order.
+    - `Z64` input: no conversion.
+    - `N64` / `V64` input: converted during upload.
+  - `--fix-pi-bus-speed[=12..FF]`: patch PI bus speed byte in ROM header before upload.
+    - default value (without `=...`) is `FF`.
+    - minimum accepted value is `12` (hex).
+    - only works on Z64 header data; if input is not Z64, use `--fix-rom` too.
+- `pull <remote path> [<local filename>]`: download a file from ROMFS.
+  - `<local filename>` omitted: output file name is the basename of `<remote path>`.
+- `free`: print free ROMFS space in bytes and human-readable form.
 
 ### Remote access to cartridge
 
